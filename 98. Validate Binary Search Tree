@@ -1,0 +1,18 @@
+https://leetcode.com/problems/validate-binary-search-tree/description/
+
+class Solution {
+public:
+    bool validate(TreeNode *root, long mini, long maxi){
+        if(root == nullptr){
+            return true;
+        }
+        if(root->val <= mini || root->val >= maxi){
+            return false;
+        }
+        bool valid = validate(root->right, root->val, maxi) && validate(root->left, mini, root->val);
+        return valid;
+    }
+    bool isValidBST(TreeNode* root) {
+        return validate(root, LLONG_MIN, LLONG_MAX);
+    }
+};
