@@ -1,0 +1,35 @@
+https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+
+        // using recursion
+
+        // if(root==nullptr)  return 0;
+        // int left=maxDepth(root->left);
+        // int right=maxDepth(root->right);
+        // return max(right,left)+1;
+
+
+        //using level-order traversal
+        
+        if (root == nullptr) return 0;
+        queue <TreeNode*> q;
+        q.push(root);
+        int count =0;
+        while(!q.empty()){
+            int s = q.size();
+            for(int i=0; i<s;i++){
+                TreeNode* node = q.front();
+                q.pop();
+                if(node->left) 
+                    q.push(node->left);
+                if(node->right) 
+                    q.push(node->right);
+            }
+            count++;
+        }
+        return count;
+    }
+};
