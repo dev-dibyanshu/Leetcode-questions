@@ -1,0 +1,21 @@
+https://leetcode.com/problems/distribute-coins-in-binary-tree/description/
+
+class Solution {
+public:
+    int moves = 0;
+    int traverse(TreeNode* root){    
+        if(root == nullptr){
+            return 0;
+        }
+        int left = traverse(root->left);
+        int right = traverse(root->right);
+        moves +=  abs(left) + abs(right);
+        
+        int total = right + left + (root->val-1);
+        return total; 
+    }
+    int distributeCoins(TreeNode* root) {
+        traverse(root);
+        return moves;
+    }
+};
