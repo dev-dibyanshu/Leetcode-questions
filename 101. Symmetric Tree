@@ -1,0 +1,19 @@
+https://leetcode.com/problems/symmetric-tree/
+
+class Solution {
+public:
+    bool check(TreeNode* left, TreeNode* right){
+        if(right == nullptr || left == nullptr){
+            return right==left;
+        }
+        if(right->val!= left->val){
+            return false;
+        }
+        return check(left->left, right->right) && check(left->right, right->left);
+
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(!root) return true;
+        return check(root->left, root->right);
+    }
+};
