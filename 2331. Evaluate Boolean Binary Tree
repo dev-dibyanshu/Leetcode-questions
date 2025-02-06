@@ -1,0 +1,25 @@
+https://leetcode.com/problems/evaluate-boolean-binary-tree/description/?envType=problem-list-v2&envId=r78fi37c
+
+class Solution {
+public:
+    bool postOrder(TreeNode* root){
+        if (root->left == nullptr && root->right == nullptr){
+                if (root->val == 1)
+                    return true;
+                return false;
+
+        }
+
+        bool left1= postOrder(root->left);
+        bool right1= postOrder(root->right);
+        if(root->val == 2){
+            return left1 || right1;
+        }
+        else{
+            return left1 && right1;
+        }
+    }
+    bool evaluateTree(TreeNode* root) {
+        return postOrder(root);
+    }
+};
