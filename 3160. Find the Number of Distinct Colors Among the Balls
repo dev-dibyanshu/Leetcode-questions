@@ -1,0 +1,24 @@
+https://leetcode.com/problems/find-the-number-of-distinct-colors-among-the-balls/description/
+
+class Solution {
+public:
+    vector<int> queryResults(int limit, vector<vector<int>>& queries) {
+        unordered_map<int, int> color;
+        unordered_map<int, int> ball;
+        vector<int> answer;
+        for(int i =0; i < queries.size(); i++){
+            color[queries[i][1]]++;
+            if(ball.find(queries[i][0])!= ball.end()){
+                if(color[ball[queries[i][0]]]==1){
+                    color.erase(ball[queries[i][0]]);
+                }
+                else{
+                    color[ball[queries[i][0]]]--;
+                }
+            }
+            ball[queries[i][0]] = queries[i][1];
+            answer.push_back(color.size());
+        }
+        return answer;
+    }
+};
