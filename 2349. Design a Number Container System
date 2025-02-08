@@ -1,0 +1,28 @@
+https://leetcode.com/problems/design-a-number-container-system/description/
+
+class NumberContainers {
+    unordered_map<int, set<int>> numberToIdx;
+    unordered_map<int, int> idxToNumber;
+
+public:
+    NumberContainers() {}
+    
+    void change(int index, int number) {
+        if (idxToNumber.count(index)) {
+            int prev = idxToNumber[index];
+            numberToIdx[prev].erase(index);
+            if (numberToIdx[prev].empty()) {
+                numberToIdx.erase(prev);
+            }
+        }
+        idxToNumber[index] = number;
+        numberToIdx[number].insert(index);
+    }
+    
+    int find(int number) {
+        if (!numberToIdx.count(number)) {
+            return -1;
+        }
+        return *numberToIdx[number].begin();
+    }
+};
