@@ -1,0 +1,35 @@
+https://leetcode.com/problems/max-sum-of-a-pair-with-equal-sum-of-digits/description/
+
+class Solution {
+public:
+    int digitSum(int n){
+        int sum=0;
+        while(n>0){
+            int digit = n%10;
+            sum+=digit;
+            n/=10;
+        }
+        return sum;
+    }
+
+    int maximumSum(vector<int>& nums) {
+        unordered_map<int, priority_queue<int>> freq;
+        int answer=0;
+        for(int i: nums){
+            int sum = digitSum(i);
+            freq[sum].push(i);
+        }
+        for (const auto& pair : freq) {
+            priority_queue<int> temp = pair.second; 
+            int sum=0;
+            if(temp.size()>1){
+            sum+=temp.top();
+            temp.pop();
+            sum+=temp.top();
+            answer=max(answer, sum);
+            }
+    }
+        if(answer)
+        return answer; return -1;
+    } 
+};
