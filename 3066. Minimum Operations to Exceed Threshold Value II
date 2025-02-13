@@ -1,0 +1,27 @@
+https://leetcode.com/problems/minimum-operations-to-exceed-threshold-value-ii/
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int k) {
+        int  operation =0;
+        priority_queue<long long  ,vector< long long >, greater < long long>> pg;
+        
+        for(int i : nums){
+            pg.push(i);
+        }
+
+        while(pg.top() < k){
+                if (pg.size() < 2) {
+                   return -1;  
+                }
+                long long first = pg.top();
+                pg.pop();
+                long long second = pg.top();
+                pg.pop();
+                long long value = (first * 2LL) + second;
+                pg.push(value);   
+                operation++;
+        }
+        return operation;
+    }
+};
