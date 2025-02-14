@@ -1,0 +1,20 @@
+https://leetcode.com/problems/fibonacci-number/description/
+
+class Solution {
+public:
+    int findFibo(int n, vector<int> &nums){
+        if(n==0 || n==1){
+            return n;
+        }
+        if(nums[n] != -1){
+            return nums[n];
+        }
+        nums[n] = findFibo(n-1, nums) +findFibo(n-2, nums); 
+        return nums[n];
+    }
+    int fib(int n) {
+        vector<int> nums(n+1, -1);
+        return findFibo(n, nums);
+
+    }
+};
