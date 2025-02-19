@@ -1,0 +1,36 @@
+https://leetcode.com/problems/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/description/
+
+class Solution {
+public:
+    string answer = "";
+    int count =0;
+    void traverse(int n, int k, string str){
+        int s = str.size();
+        if(s > n){
+            return;
+        }
+
+        if(s==n){
+            count ++;
+        }
+
+        if(count == k){
+            answer = str;
+            return;
+        }
+
+    for (char ch : {'a', 'b', 'c'}) {
+        if (str.empty() || str.back() != ch) {
+            traverse(n, k, str + ch);
+            if (!answer.empty()) return; 
+        }
+    }
+        
+    }
+    string getHappyString(int n, int k) {
+        answer = "";
+        count =0;
+        traverse(n, k, "");
+        return answer;
+    }
+};
