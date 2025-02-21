@@ -1,0 +1,31 @@
+https://leetcode.com/problems/find-elements-in-a-contaminated-binary-tree/
+
+class FindElements {
+public:
+    set<int> mp;
+    FindElements(TreeNode* root) {
+        if (root) {
+            root->val = 0;
+            mp.insert(0); 
+            recover(root);
+        }
+    }
+    void recover(TreeNode* root){
+        if(root==nullptr) return;
+        if(root->left){
+            root->left->val = (root->val*2) + 1;
+            mp.insert((root->val*2) + 1);
+        } 
+        if(root->right){
+            root->right->val = (root->val*2) + 2;
+            mp.insert((root->val*2) + 2);
+        } 
+        recover(root->left);
+        recover(root->right);
+    }
+    
+    bool find(int target) {
+        if(mp.find(target)!= mp.end()) return true;  
+        return false;
+    }
+};
