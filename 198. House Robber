@@ -1,0 +1,18 @@
+https://leetcode.com/problems/house-robber/
+
+class Solution {
+public:
+    int traverse(vector<int> &nums, int n, vector<int> &dp){
+        if(n<0) return 0;
+        if(dp[n]!= -1) return dp[n];
+
+        int pick = nums[n] + traverse(nums, n-2, dp);
+        int noPick = traverse(nums, n-1, dp);
+        dp[n] = max(pick, noPick);
+        return dp[n];
+    }
+    int rob(vector<int>& nums) {
+        vector<int> dp(nums.size()+1, -1);
+        return traverse(nums, nums.size()-1, dp);
+    }
+};
