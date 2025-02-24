@@ -1,0 +1,36 @@
+https://leetcode.com/problems/house-robber-ii/
+
+class Solution {
+public:
+    int traverse(vector<int>& nums, int n, vector<int>& dp){
+        if(n < 0) return 0; 
+        if(dp[n]!=-1) return dp[n];
+
+        int pick = nums[n] + traverse(nums, n-2, dp);
+        int noPick = 0 + traverse(nums, n-1, dp);
+        
+        dp[n] = max(pick, noPick);
+        
+        return dp[n];
+    }
+    int rob(vector<int>& nums) {
+        if(nums.size()==1) return nums[0];
+        
+        vector<int> case1;
+        vector<int> case2;
+        
+        for(int i=1;i<nums.size();i++){
+            case1.push_back(nums[i]);
+        }
+        for(int i = 0;i<nums.size()-1;i++){
+            case2.push_back(nums[i]);
+        }
+
+        vector<int> dp1(case1.size(), -1);
+        vector<int> dp2(case2.size(), -1);
+        
+        int answer1 = traverse(case1, case1.size()-1,dp1);
+        int answer2 = traverse(case2, case2.size()-1,dp2);
+        return max(answer1, answer2);
+    }
+};
