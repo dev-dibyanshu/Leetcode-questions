@@ -1,0 +1,39 @@
+https://leetcode.com/problems/house-robber-iii/
+
+class Solution {
+public:
+    unordered_map<TreeNode*, int> dp;
+
+    int traverse(TreeNode* root){
+        if(root==nullptr) {
+            return 0;
+        }
+
+        if(dp.find(root)!=dp.end()) {
+            return dp[root];
+        }
+        
+        int sum =root->val;
+
+        if(root->right){
+         sum += traverse(root->right->right);
+         sum += traverse(root->right->left);
+        }
+
+        if(root->left){
+         sum += traverse(root->left->right);
+         sum += traverse(root->left->left);
+        }
+
+        int noPick = 0;
+
+        noPick+=traverse(root->left);
+        noPick+=traverse(root->right);
+        
+        dp[root] = max(noPick, sum);
+        return dp[root];
+    }
+    int rob(TreeNode* root) {
+        return traverse(root);    
+    }
+};
