@@ -1,0 +1,21 @@
+https://leetcode.com/problems/divide-array-into-equal-pairs/?envType=daily-question&envId=2025-03-17
+
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        int count =0;
+        vector<int> counter(501, 0);
+        for(int i: nums){
+            if(counter[i]==0){
+                count ++;
+                counter[i]++;
+            }
+            else{
+                count--;
+                counter[i]--;
+            }
+        }
+        if(count>0) return false;
+        return true;
+    }
+};
