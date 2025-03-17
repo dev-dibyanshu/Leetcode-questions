@@ -1,0 +1,23 @@
+https://leetcode.com/problems/pascals-triangle/
+
+class Solution {
+public:
+    vector<int> generateRow(int n){
+        vector<int> answer;
+        int number =1;
+        for(int i=0;i<n;i++){
+            answer.push_back(number);
+            number *= (n-i-1);
+            number /= (i+1);  
+        }
+        return answer;
+    }
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> answer;
+        for(int i=1;i<=numRows;i++){
+            vector<int> add = generateRow(i);
+            answer.push_back(add);
+        }
+        return answer;
+    }
+};
