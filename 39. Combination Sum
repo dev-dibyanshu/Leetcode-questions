@@ -1,0 +1,25 @@
+https://leetcode.com/problems/combination-sum/description/
+
+class Solution {
+public:
+    void solve(vector<int> candidates, int target, int sum, set<vector<int>>& answer, vector<int> possible){
+        if(sum == target){ 
+            sort(possible.begin(),possible.end());
+            answer.insert(possible);
+        }
+        for(int i: candidates){
+            if(sum+i <= target){
+                // vector<int> copy = possible;
+                possible.push_back(i);
+                solve(candidates, target, sum+i, answer, possible);
+            possible.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        set<vector<int>> sett;
+        solve(candidates, target, 0, sett, {});
+        vector<vector<int>> answer(sett.begin(),sett.end());
+        return answer;
+    }
+};
