@@ -1,0 +1,20 @@
+https://leetcode.com/problems/min-cost-climbing-stairs/description/
+
+class Solution {
+public:
+    int traverse(vector<int> cost, int n, vector<int> &mp){
+        if(n<=1) return cost[n];
+        if(mp[n] != -1) return mp[n];
+        int oneStep = cost[n] + traverse(cost, n-1, mp);
+        int twoStep = cost[n] + traverse(cost, n-2, mp);
+
+        return mp[n] = min(oneStep, twoStep);
+    }
+
+    int minCostClimbingStairs(vector<int>& cost) {
+        cost.push_back(0);
+        vector<int> mp(cost.size(), -1);
+        int answer = traverse(cost, cost.size()-1, mp);
+        return answer;
+    }
+};
