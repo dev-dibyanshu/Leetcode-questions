@@ -1,0 +1,24 @@
+https://leetcode.com/problems/combinations/description/
+
+class Solution {
+public:
+    vector<vector<int>> answer;
+    void traverse(int start , int k, int n, vector<int>& temp){
+        if(k == 0){ 
+            answer.push_back(temp);
+            return;
+        }
+        if(start > n) return ;
+        temp.push_back(start);
+        traverse(start +1, k -1, n, temp);
+        temp.pop_back();
+        traverse(start +1, k , n, temp);
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+
+        vector<int> temp;
+        traverse(1, k, n, temp);
+        return answer;
+    }
+};
