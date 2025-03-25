@@ -1,0 +1,19 @@
+https://leetcode.com/problems/climbing-stairs/description/
+
+class Solution {
+public:
+    unordered_map<int, int> mp;
+    int traverse(int n){
+        if(n<=2){
+            return n;
+        }
+        if(mp.find(n)!=mp.end()) return mp[n];
+        int pick = traverse(n-2);
+        int noPick = traverse(n-1);
+        mp[n] = pick + noPick;
+        return mp[n];
+    }
+    int climbStairs(int n) {
+        return traverse(n);
+    }
+};
