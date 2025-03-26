@@ -1,0 +1,24 @@
+https://leetcode.com/problems/powx-n/
+
+class Solution {
+public:
+    double solve(double x, long long n){
+        if(n==0) return 1;
+        if(n == 1) return x;
+        double answer = solve(x, n/2);
+        if(n % 2 == 1){
+            return x * answer * answer;
+        }
+        return answer * answer;
+    }
+    double myPow(double x, int n) {
+        if(n <0) {
+        long long p = n; 
+        double answer = solve(x, -p);
+        return 1/answer;
+        }
+        
+        double answer = solve(x, n);
+        return answer;
+    }
+};
