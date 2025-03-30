@@ -1,0 +1,22 @@
+https://www.geeksforgeeks.org/problems/subset-sums2234/1
+
+class Solution {
+  public:
+    vector<int> ans;
+    
+    void traverse(int sum, vector<int>& arr, int index){
+        if(index==arr.size()) {
+            ans.push_back(sum);
+            return;
+        }
+        
+        traverse(sum, arr, index+1);
+        traverse(sum+arr[index], arr, index+1);
+    }
+    vector<int> subsetSums(vector<int>& arr) {
+        int sum =0;
+        traverse(sum, arr, 0);
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
