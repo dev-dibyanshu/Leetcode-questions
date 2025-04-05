@@ -1,0 +1,22 @@
+https://leetcode.com/problems/sum-of-all-subset-xor-totals/?envType=daily-question&envId=2025-04-05
+
+class Solution {
+public:
+    vector<int> mp;
+    void traverse(vector<int>& nums, int x, int index){
+        if (index == nums.size()) {
+            mp.push_back(x); 
+            return;
+        }
+        if(index>nums.size()) return;
+        traverse(nums, x, index+1);
+        traverse(nums, x^nums[index], index+1);
+    }
+    int subsetXORSum(vector<int>& nums) {
+        int x =0;
+        traverse(nums, x, 0);
+        int answer =0;
+        for(int i: mp) answer+=i;
+        return answer;
+    }
+};
