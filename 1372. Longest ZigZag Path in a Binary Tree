@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public: 
+    int maxLen;
+
+    void findPath(TreeNode* root, int pathLen, bool left){
+        if(root == nullptr){
+            return;
+        }
+        maxLen = max(maxLen, pathLen);
+        if(left == true){
+            findPath(root->left, pathLen+1, false);
+            findPath(root->right, 1, true);
+        }
+
+        else{
+            findPath(root->right, pathLen+1, true);
+            findPath(root->left, 1, false);
+        }
+    }
+    int longestZigZag(TreeNode* root) {
+
+         findPath(root, 0, true);
+         findPath(root, 0, false);
+
+        return maxLen;
+    }
+};
