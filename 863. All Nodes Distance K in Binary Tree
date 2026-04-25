@@ -1,0 +1,72 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> answer;
+    unordered_map<TreeNode*, TreeNode*> parent;
+    void findParent(TreeNode* root){
+        if(root == nullptr){
+            return;
+        }
+
+        if(root->left != nullptr){
+            parent[root->left] = root;
+            findParent(root->left);
+        }
+
+        if(root->right != nullptr){
+            parent[root->right] = root;
+            findParent(root->right);
+        }
+    }
+
+    void traverse(TreeNode* target, int k, unordered_map<int, int> &vis){
+        queue<TreeNode*> q;
+        q.push(target);
+        vis[target->val]++;
+        while(!q.empty()){
+            int n = q.size();
+            if(k ==0){
+                break;
+            }
+            while(n--){
+                TreeNode* temp = q.front();
+                q.pop();
+
+                if(temp->left != nullptr && vis.find(temp->left->val) == vis.end()){
+                    q.push(temp->left);
+                    vis[temp->left->val]++;
+                }
+                if(temp->right != nullptr && vis.find(temp->right->val) == vis.end()){
+                    q.push(temp->right);
+                    vis[temp->right->val]++;
+                }
+                if(parent.find(temp) != parent.end() && vis.find(parent[temp]->val) == vis.end()){
+                    q.push(parent[temp]);
+                    vis[parent[temp]->val]++;
+                }
+            }
+            k--;
+        }
+
+            while(!q.empty()){
+                answer.push_back(q.front()->val);
+                q.pop();
+            }
+                
+    }
+
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        findParent(root);
+        unordered_map<int, int> vis;
+        traverse(target, k, vis);
+        return answer;
+    }
+};
