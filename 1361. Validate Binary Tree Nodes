@@ -1,0 +1,68 @@
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        // check there is no loop in the ds
+        // --- check if there is only one parent to a child 
+        // check all the member nodes are connected 
+        unordered_map<int, vector<int>> adj;
+        unordered_map<int, int> childToParent;
+
+        for(int i= 0;i<n;i++){
+            int node = i;
+            int rc = rightChild[i];
+            int lc = leftChild[i];
+
+            if(rc != -1){
+                if(childToParent.find(rc)!= childToParent.end()){
+                    return false;
+                }
+                childToParent[rc] = i;
+                adj[i].push_back(rc);
+            }
+            if(lc != -1){
+                if(childToParent.find(lc)!= childToParent.end()){
+                    return false;
+                }
+                childToParent[lc] = i;
+                adj[i].push_back(lc);
+            }
+        }
+
+        int root = -1;
+
+        for(int i= 0;i<n;i++){
+            if(childToParent.find(i) == childToParent.end()){
+                if (root != -1){
+                    return false;
+                }
+                root = i;
+            }
+        }
+
+        if (root == -1){
+            return false;
+        }
+
+        vector<int> vis(n, -1);
+        queue<int> q;
+        q.push(root);
+        vis[root] = 1;
+        int count =1;
+
+        while(!q.empty()){
+            int temp = q.front();
+            q.pop();
+
+            for(int v : adj[temp]){
+                if(vis[v] != -1){
+                    return false;
+                }
+                vis[v] = 1;
+                q.push(v);
+                count++;
+            }
+        }
+
+        return count == n;
+    }
+};
