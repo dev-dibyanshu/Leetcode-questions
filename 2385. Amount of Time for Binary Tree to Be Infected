@@ -1,0 +1,88 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int count;
+    int answer;
+    TreeNode* node;
+    void findParent(TreeNode* root, unordered_map<TreeNode*, TreeNode*> &mp){
+        if(root == nullptr){
+            return;
+        }
+        count++;    
+        if(root->left != nullptr){
+            mp[root->left] = root;
+        }
+        if(root->right != nullptr){
+            mp[root->right] = root;
+        }
+
+        findParent(root->right, mp);
+        findParent(root->left, mp);
+    }
+    void findNode(TreeNode* root, int start){
+        if(root == nullptr){
+            return;
+        }
+
+        if(root->val == start){
+            node = root;
+            return;
+        }
+        findNode(root->left, start);
+        findNode(root->right, start);
+    }
+void bfs(unordered_map<TreeNode*, TreeNode*> &mp){
+    queue<TreeNode*> q;
+    unordered_set<TreeNode*> vis;
+
+    q.push(node);
+    vis.insert(node);
+
+    while(!q.empty()){
+        int size=q.size();
+        answer++;
+
+        while(size--){
+            auto temp=q.front();
+            q.pop();
+
+            if(temp->left && !vis.count(temp->left)){
+                vis.insert(temp->left);
+                q.push(temp->left);
+            }
+
+            if(temp->right && !vis.count(temp->right)){
+                vis.insert(temp->right);
+                q.push(temp->right);
+            }
+
+            if(mp.count(temp) && !vis.count(mp[temp])){
+                vis.insert(mp[temp]);
+                q.push(mp[temp]);
+            }
+            }
+        }
+    }
+    int amountOfTime(TreeNode* root, int start) {
+        count=0;
+        answer =0;
+        unordered_map<TreeNode*, TreeNode*> mp;
+        unordered_set<TreeNode*, int> vis;
+        findNode(root, start);
+        findParent(root, mp);
+
+        bfs(mp);
+
+        return answer-1;
+    }
+};
