@@ -1,0 +1,92 @@
+
+brute force 
+----------------------------------------------
+
+class Solution {
+public:
+    int answer;
+    int traverse(TreeNode* root, int &count){
+        if(root == nullptr){
+            return 0;
+        }
+        count++;
+        int sum = root->val + traverse(root->left, count) + traverse(root->right, count);
+        return sum;
+    }
+
+    void traverseNodes(TreeNode* root){
+        if(root == nullptr){
+            return;
+        }
+
+        int count = 0; 
+        int totalSum = traverse(root, count); 
+        if((totalSum)/count == root->val) {
+            answer++; 
+        }
+        traverseNodes(root->left); 
+        traverseNodes(root->right);
+    }
+    int averageOfSubtree(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        answer = 0;
+        int count =0;
+        traverseNodes(root);
+
+        return answer;
+    }
+};
+
+
+
+
+---------------------------------------------------
+optimised version
+---------------------------------------------------
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int answer;
+    pair<int, int> traverse(TreeNode* root){
+        if(root == nullptr){
+            return {0,0};
+        }
+        pair<int, int> l = traverse(root->left);
+        pair<int, int> r = traverse(root->right);
+        
+        int leftSum = l.first;
+        int leftCount = l.second;
+        
+        int rightSum = r.first;
+        int rightCount = r.second;
+
+        int sum = root->val + rightSum + leftSum;
+        int count = 1 + leftCount + rightCount;
+
+        if(sum/count == root->val){
+            answer++;
+        }
+
+        return {sum, count};
+    }
+    int averageOfSubtree(TreeNode* root) {
+        answer =0;
+        traverse(root);
+        return answer;
+        
+    }
+};
