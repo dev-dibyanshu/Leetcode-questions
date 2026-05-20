@@ -1,0 +1,66 @@
+class Solution {
+public:
+    unordered_map<TreeNode*, TreeNode*> parentMap;
+    unordered_set<TreeNode*> leafNodes;
+    int count;
+    void createParent(TreeNode* root){
+        if(root == nullptr){
+            return;
+        }
+
+        if(root->left != nullptr)
+            parentMap[root->left] = root;
+
+        if(root->right != nullptr)
+            parentMap[root->right] = root;
+
+        if(root->left == nullptr && root->right == nullptr){
+            leafNodes.insert(root);
+        }
+        createParent(root->left);
+        createParent(root->right);
+    }
+
+    void bfs(TreeNode* root, int distance){
+
+        queue<TreeNode*> q;
+        unordered_set<TreeNode*> vis;
+        
+        q.push(root);
+        vis.insert(root);
+        
+        int level =0;
+        while(!q.empty() && level <= distance){
+            int n = q.size();
+                while(n--){
+                    TreeNode* node = q.front();
+                    q.pop();
+                    if(node != root && node->right == nullptr && node->left == nullptr){
+                        count++;
+                    }
+                    if(node->left != nullptr && !vis.count(node->left)){
+                        q.push(node->left);
+                        vis.insert(node->left);
+                    }
+                    if(node->right != nullptr && !vis.count(node->right)){
+                        q.push(node->right);
+                        vis.insert(node->right);
+                    }
+                    if(parentMap.find(node) != parentMap.end() && !vis.count(parentMap[node])){
+                        q.push(parentMap[node]);
+                        vis.insert(parentMap[node]);
+                    }
+                }
+            level++;
+        }
+    }
+
+    int countPairs(TreeNode* root, int distance) {
+        createParent(root);
+        count =0;
+        for(auto &i : leafNodes){
+            bfs(i, distance);
+        }
+        return count/2;
+    }
+};
