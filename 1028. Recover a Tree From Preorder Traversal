@@ -1,0 +1,60 @@
+class Solution {
+public:
+    TreeNode* createTree(string traversal, int &index, int depth){
+        int n = traversal.size();
+        if(index >= n){
+            return nullptr;
+        }
+
+        int dash = 0;
+
+        int j = index;
+        while(j < n){
+            if(traversal[j] != '-'){
+                break;
+            }
+            else{
+                j++;
+            }
+        }
+        
+        dash = j - index;
+
+        if(dash != depth){
+            return nullptr;
+        }
+        
+        index = j;
+
+        int num =0;
+
+        // for(int i= index; i<n;i++){
+        //     if(isdigit(traversal[i])){
+        //         num = num*10 + (traversal[i] - '0'); 
+        //     }
+        //     else{
+        //         break;
+        //     }
+        // }
+        // index =i;
+
+        while(index < n && isdigit(traversal[index])){
+            num = (num*10) + (traversal[index] - '0');
+            index++;
+        }
+
+        TreeNode* node = new TreeNode(num);
+
+
+        node->left =  createTree(traversal, index, depth + 1);
+        node->right =  createTree(traversal, index, depth + 1);
+
+        return node;
+
+    }
+    TreeNode* recoverFromPreorder(string traversal) {
+        int index =0;
+        int depth = 0;
+        return createTree(traversal, index,depth);
+    }
+};
