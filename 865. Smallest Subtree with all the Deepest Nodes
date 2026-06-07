@@ -1,0 +1,24 @@
+class Solution {
+public:
+    pair<int, TreeNode*> solve(TreeNode* root){
+        if(root ==nullptr){
+            return {0, nullptr};
+        }
+
+        auto leftChild = solve(root->left);
+        auto rightChild = solve(root->right);
+
+        if(leftChild.first == rightChild.first){
+            return {leftChild.first+1, root};
+        }
+        else if(leftChild.first > rightChild.first){
+            return {leftChild.first+1, leftChild.second};
+        }
+        else{
+            return {rightChild.first+1, rightChild.second};
+        }
+    }
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) {
+        return solve(root).second;
+    }
+};
