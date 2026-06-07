@@ -37,3 +37,26 @@ public:
         return bfs(root);
     }
 };
+
+
+class Solution {
+public:
+    void solve(TreeNode* leftChild, TreeNode* rightChild, int level){
+        if(leftChild == nullptr || rightChild == nullptr){
+            return;
+        }
+
+        if(level%2 == 1){
+            swap(leftChild->val, rightChild->val);
+        }
+
+            solve(leftChild->left, rightChild->right, level+1);
+            solve(leftChild->right, rightChild->left, level +1);
+
+
+    }
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        solve(root->left, root->right,1);
+        return root;
+    }
+};
