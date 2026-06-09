@@ -1,0 +1,46 @@
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        root->val = 0; // root has no cousins
+
+        while (!q.empty()) {
+            int size = q.size();
+            int nextLevelSum = 0;
+            vector<TreeNode*> nodes;
+
+            // collect nodes of current level
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+                nodes.push_back(node);
+
+                if (node->left) {
+                    nextLevelSum += node->left->val;
+                    q.push(node->left);
+                }
+                if (node->right) {
+                    nextLevelSum += node->right->val;
+                    q.push(node->right);
+                }
+            }
+
+            // update children values
+            for (auto node : nodes) {
+                int siblingSum = 0;
+                if (node->left) siblingSum += node->left->val;
+                if (node->right) siblingSum += node->right->val;
+
+                if (node->left) {
+                    node->left->val = nextLevelSum - siblingSum;
+                }
+                if (node->right) {
+                    node->right->val = nextLevelSum - siblingSum;
+                }
+            }
+        }
+
+        return root;
+    }
+};
