@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int height[100001];
+    int level[100001];
+    int levelMax[100001];
+    int levelSecondMax[100001];
+    int findHeight(TreeNode* root, int l){
+        if(root == nullptr){
+            return 0;
+        }
+
+        height[root->val] = 1 + max(findHeight(root->left, l+1), findHeight(root->right, l+1));
+        level[root->val] = l;
+
+        if(levelMax[l] < height[root->val]){
+            levelSecondMax[l] = levelMax[l];
+            levelMax[l] = height[root->val];
+        }
+        else if(levelSecondMax[l] < height[root->val]){
+            levelSecondMax[l] = height[root->val];
+        }
+
+
+        return height[root->val];
+    }
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+        findHeight(root, 0);
+
+        vector<int> answer;
+        for(int &node : queries){
+            int H = height[node];
+            int L = level[node];
+
+            int res = L + (height[node] == levelMax[L] ? levelSecondMax[L] : levelMax[L]) - 1;
+            answer.push_back(res);
+        }   
+
+        return answer;
+    }
+};
