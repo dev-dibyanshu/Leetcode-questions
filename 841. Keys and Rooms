@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        vector<bool> vis(rooms.size(), false);
+        int count =0;
+        queue<vector<int>> q;
+        q.push(rooms[0]);
+        vis[0] = true;
+        count++;
+
+        while(!q.empty()){
+            vector<int> keys = q.front();
+            q.pop();
+            for(int k : keys){
+                if(vis[k] == false){
+                    vis[k] = true;
+                    count++;
+                    q.push(rooms[k]);
+                }
+            }
+        }
+
+        return count == rooms.size() ? true : false;
+    }
+};
