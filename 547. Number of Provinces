@@ -1,0 +1,40 @@
+class Solution {
+public:
+    void dfs(vector<vector<int>> &adjList, int node, vector<bool> &vis){
+        if(vis[node] == true){
+            return;
+        }
+
+        vis[node] = true;
+
+        for(int ngbr : adjList[node]){
+            if(vis[ngbr] == false){
+                dfs(adjList, ngbr, vis);
+            }
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        int m = isConnected[0].size();
+        vector<vector<int>> adjList(n);
+
+        for(int i=0;i<n;i++){
+            for(int j =0;j<m;j++){
+                if(i != j && isConnected[i][j] == 1){
+                    adjList[i].push_back(j);
+                    adjList[j].push_back(i);
+                }
+            }
+        }
+        int answer =0;
+        vector<bool> vis(n, false);
+        for(int i =0; i< n;i++){
+            if(vis[i] == false){
+
+                dfs(adjList, i, vis);
+                answer ++;
+            }
+        }
+        return answer;
+    }
+};
