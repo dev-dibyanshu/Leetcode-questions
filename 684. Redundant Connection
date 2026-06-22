@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool dfs(map<int, vector<int>> &adjList, int u, int v, vector<int> &vis){
+        vis[u] = true;
+
+        if(u == v){
+            return true;
+        }
+
+        for(auto ngbr : adjList[u]){
+            if(vis[ngbr] == true)   
+                continue;
+
+            if(dfs(adjList, ngbr, v, vis)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        map<int, vector<int>> adjList;
+        vector<int> vis(n+1, false);
+
+        for(auto el : edges){
+            int u = el[0];
+            int v = el[1];
+        
+            vector<int> vis(n+1, false);
+
+            if(adjList.find(u) != adjList.end() && adjList.find(v) != adjList.end() && dfs(adjList, u, v, vis)){
+                return el;
+            }
+
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+        }
+    
+        return {};
+    }
+};
