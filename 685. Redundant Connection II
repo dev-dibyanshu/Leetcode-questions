@@ -1,0 +1,91 @@
+class Solution {
+public:
+    set<pair<int,int>> cycleEdges;
+        void dfs(int curr, int pr, map<int, vector<int>> &adj, vector<int>& col, vector<int>& par){
+        col[curr] = 2;
+        par[curr] = pr;
+
+        for (auto el:adj[curr]){
+            if (col[el] == 2){
+                //cycledetected
+                int currNode = curr;
+                int childNode = el;
+
+                while (true){
+
+                    cycleEdges.insert({currNode, childNode});
+                    if (currNode == el){
+                        break;
+                    }
+                    childNode = currNode;
+                    currNode = par[currNode];
+
+                }
+                return;
+            }
+            else if (col[el] == 1){
+                dfs(el, curr, adj, col, par);
+            }
+        }
+
+        col[curr] = 3;
+    }
+
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        map<int, vector<int>> adj;
+        map<int, vector<int>> inDegree;
+        int faultyNode = -1;
+
+        map<pair<int,int>, int> edgesIdx;
+
+        for(int i =0; i<n;i++){
+            auto el = edges[i];
+
+            edgesIdx[{el[0], el[1]}] = i;
+            adj[el[0]].push_back(el[1]);
+            inDegree[el[1]].push_back(el[0]);
+
+            if(inDegree[el[1]].size() > 1){
+                faultyNode = el[1]; 
+            }
+        }
+
+        vector<int> col(n+1, 1);
+        vector<int> parent(n+1, -1);
+
+        for(int i=1;i<=n;i++){
+            if(col[i]==1){
+                dfs(i, -1, adj, col, parent);
+            }
+        }
+
+        bool hasCycle = cycleEdges.size() > 0;
+
+        if(!hasCycle){
+            int maxIndex = -1;
+            for(auto el : inDegree[faultyNode]){
+                maxIndex = max(maxIndex, edgesIdx[{el, faultyNode}]);
+            }
+            return edges[maxIndex];
+        }
+
+        if(hasCycle && faultyNode == -1){
+            int maxIndex = -1;
+            for(auto el : cycleEdges){
+                maxIndex = max(maxIndex, edgesIdx[el]);
+            }
+            return edges[maxIndex];
+        }
+
+        int maxIndex = -1;
+        for(auto el : inDegree[faultyNode]){
+            pair<int,int> faultyedge = {el,faultyNode};
+            if(cycleEdges.count(faultyedge)){
+                maxIndex = max(maxIndex, edgesIdx[faultyedge]);
+            }
+        }
+
+        return edges[maxIndex];
+    }
+};
