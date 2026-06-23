@@ -1,0 +1,41 @@
+class Solution {
+public:
+       bool dfs(vector<vector<int>>& graph, int node, vector<int> &color, int currColor){
+        color[node] = currColor;
+
+        for(int &ngbr : graph[node]){
+            if(color[ngbr] == color[node]){
+                return false;
+            }
+            if(color[ngbr] == -1){
+                int ngbrColor = 1 - currColor;
+                if(dfs(graph, ngbr, color, ngbrColor) == false){
+                    return false;
+                }
+            }
+
+        }
+
+        return true;
+    }
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        vector<vector<int>> graph(n+1);
+        for(auto i : dislikes){
+            int u = i[0];
+            int v = i[1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+
+        vector<int> color (graph.size(), -1);
+        
+        for(int i =0;i<graph.size();i++){
+            if(color[i] == -1){
+                if(dfs(graph, i, color, 1) == false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
